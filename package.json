@@ -2,7 +2,7 @@
   "name": "dialpad",
   "version": "0.0.1",
   "private": true,
-  "homepage": "http://williamle8300.github.io/dialpad"
+  "homepage": "http://williamle8300.github.io/dialpad",
   "devDependencies": {
     "react-scripts": "0.9.5"
   },
@@ -11,12 +11,14 @@
     "create-react-class": "^15.5.2",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-tap-event-plugin": "^2.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build&&gh-pages -d build"
   }
 }
