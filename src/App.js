@@ -83,12 +83,12 @@ module.exports = createReactClass({
 
     return (
       <App>
-        <audio id="onload-audio" src="../sounds/onload.mp3"/>
-        <audio id="keypress-audio" src="../sounds/keypress.mp3"/>
-        <audio id="correct-pass-audio" src="../sounds/correct-pass.mp3"/>
-        <audio id="wrong-pass-audio" src="../sounds/wrong-pass.mp3"/>
-        <audio id="delete-audio" src="../sounds/delete.mp3"/>
-        <audio id="clear-audio" src="../sounds/clear.mp3"/>
+        <audio id="onload-audio" src="./sounds/onload.mp3"/>
+        <audio id="keypress-audio" src="./sounds/keypress.mp3"/>
+        <audio id="correct-pass-audio" src="./sounds/correct-pass.mp3"/>
+        <audio id="wrong-pass-audio" src="./sounds/wrong-pass.mp3"/>
+        <audio id="delete-audio" src="./sounds/delete.mp3"/>
+        <audio id="clear-audio" src="./sounds/clear.mp3"/>
         <MobileScreen>
           <Main>
             <Logo/>
