@@ -1,44 +1,36 @@
 import Key from './Key'
 
-// import Color from 'color'
 import React from 'react';
 import createReactClass from 'create-react-class'
 import styled, {keyframes} from 'styled-components'
-// import PropTypes from 'prop-types'
-
-
-const animateBgColor = keyframes`
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-`;
-const App = styled.div `
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #aac1b4;
-  ${''/* background: linear-gradient(270deg, #062920, #1a6555, #065040);
-  background-size: 400% 100%;
-  animation: ${animateBgColor} 80s ease infinite; */}
-`
 
 
 module.exports = createReactClass({
   getInitialState: function () {
     return {
       input: [],
+      isPasswordValid: null,
+      isDisabled: false,
     }
   },
   render: function () {
 
+    const App = styled.div `
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: ${this._computeBorderColor()};
+      background-size: 400% 100%;
+    `
     const MobileScreen = styled.div`
       position: relative;
       width: 375px;
       height: 667px;
       background-color: #252525;
-      opacity: 0.95;
+      opacity: 0.9;
       border-radius: 10px;
+      border: 18px solid #313b36;
     `
     const Main = styled.div`
       position: relative;
@@ -58,7 +50,7 @@ module.exports = createReactClass({
       position: absolute;
       bottom: 5%;
       display: flex;
-      padding: 0 15% 5%;
+      padding: 0 15% 3%;
       width: 70%;
       height: 12%
     `
@@ -75,8 +67,9 @@ module.exports = createReactClass({
       font-size: 3rem;
       color: #24ce6e;
       text-shadow: 0px 0px 15px #24ce6e;
-      ${''/* box-shadow: inset 0 0 13px #555; */}
-      background-color: #404040;
+      box-shadow: inset 0 0 13px #555;
+      background-color: #28352f;
+      box-shadow: inset 0 0 24px #2f483c;
     `
     const Dialpad = styled.div`
       position: absolute;
@@ -90,6 +83,12 @@ module.exports = createReactClass({
 
     return (
       <App>
+        <audio id="onload-audio" src="../sounds/onload.mp3"/>
+        <audio id="keypress-audio" src="../sounds/keypress.mp3"/>
+        <audio id="correct-pass-audio" src="../sounds/correct-pass.mp3"/>
+        <audio id="wrong-pass-audio" src="../sounds/wrong-pass.mp3"/>
+        <audio id="delete-audio" src="../sounds/delete.mp3"/>
+        <audio id="clear-audio" src="../sounds/clear.mp3"/>
         <MobileScreen>
           <Main>
             <Logo/>
@@ -101,37 +100,73 @@ module.exports = createReactClass({
             </Pass>
           </Main>
           <Dialpad>
-            <Key handleTap={this.handleInput.bind(null, '1')}>1</Key>
-            <Key handleTap={this.handleInput.bind(null, '2')}>2</Key>
-            <Key handleTap={this.handleInput.bind(null, '3')}>3</Key>
-            <Key handleTap={this.handleInput.bind(null, '4')}>4</Key>
-            <Key handleTap={this.handleInput.bind(null, '5')}>5</Key>
-            <Key handleTap={this.handleInput.bind(null, '6')}>6</Key>
-            <Key handleTap={this.handleInput.bind(null, '7')}>7</Key>
-            <Key handleTap={this.handleInput.bind(null, '8')}>8</Key>
-            <Key handleTap={this.handleInput.bind(null, '9')}>9</Key>
-            <Key handleTap={this.deleteInput}><span className="fa fa-chevron-circle-left"></span></Key>
-            <Key handleTap={this.handleInput.bind(null, '0')}>0</Key>
-            <Key handleTap={this.resetInput}><span className="fa fa-times-circle"></span></Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '1')}>1</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '2')}>2</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '3')}>3</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '4')}>4</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '5')}>5</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '6')}>6</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '7')}>7</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '8')}>8</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '9')}>9</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.deleteInput}><span className="fa fa-long-arrow-left"></span></Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.handleInput.bind(null, '0')}>0</Key>
+            <Key isDisabled={this.state.isDisabled} handleTap={this.clearInput}>__</Key>
           </Dialpad>
         </MobileScreen>
       </App>
     )
   },
+  componentDidMount: function () {
+    document.getElementById('onload-audio').play()
+  },
   handleInput: function (value) {
 
     this.setState({
       input: this.state.input.length !== 4 ? this.state.input.concat(value) : [value]
+    }, () => {
+
+      document.getElementById('keypress-audio').play()
+
+      if (this.state.input.length === 4) {
+
+        this.setState({isDisabled: true}, () => {
+
+          if (this._checkValidity(this.state.input)) {
+
+            this.setState({isPasswordValid: true}, () => document.getElementById('correct-pass-audio').play())
+
+            setTimeout(() => this.setState({isPasswordValid: null, isDisabled: false, input: []}), 2000)
+          }
+
+          if (!this._checkValidity(this.state.input)) {
+
+            this.setState({isPasswordValid: false}, () => document.getElementById('wrong-pass-audio').play())
+
+            setTimeout(() => this.setState({isPasswordValid: null, isDisabled: false, input: []}), 2000)
+          }
+        })
+      }
     })
   },
   deleteInput: function () {
 
     this.setState({
       input: this.state.input.slice(0, -1)
-    })
+    }, () => document.getElementById('delete-audio').play())
   },
-  resetInput: function () {
+  clearInput: function () {
 
-    this.setState({input: []})
+    this.setState({input: []}, () => document.getElementById('clear-audio').play())
+  },
+  _validPassword: [1, 9, 7, 3],
+  _checkValidity: function (input) {
+    return input.join() === this._validPassword.join()
+  },
+  _computeBorderColor: function () {
+
+    if (this.state.isPasswordValid === null) return '#7d7d7d'
+    if (this.state.isPasswordValid === true) return '#31f59a'
+    if (this.state.isPasswordValid === false) return '#e85873'
   }
 })
