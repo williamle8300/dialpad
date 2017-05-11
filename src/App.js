@@ -1,4 +1,7 @@
+import PublicPath from './public-path'
+
 import Key from './Key'
+
 
 import React from 'react';
 import createReactClass from 'create-react-class'
@@ -43,7 +46,7 @@ module.exports = createReactClass({
       margin: 0 auto;
       width: 50%;
       height: 50%;
-      background: url(./images/logo.png) no-repeat center center, radial-gradient(#4f6b5b, #224631, #252525, #252525);
+      background: url(${PublicPath}/images/logo.png) no-repeat center center, radial-gradient(#4f6b5b, #224631, #252525, #252525);
       background-size: contain;
     `
     const Pass = styled.div`
@@ -83,12 +86,12 @@ module.exports = createReactClass({
 
     return (
       <App>
-        <audio id="onload-audio" src="./sounds/onload.mp3"/>
-        <audio id="keypress-audio" src="./sounds/keypress.mp3"/>
-        <audio id="correct-pass-audio" src="./sounds/correct-pass.mp3"/>
-        <audio id="wrong-pass-audio" src="./sounds/wrong-pass.mp3"/>
-        <audio id="delete-audio" src="./sounds/delete.mp3"/>
-        <audio id="clear-audio" src="./sounds/clear.mp3"/>
+        <audio id="onload-audio" src={`${PublicPath}/sounds/onload.mp3`}/>
+        <audio id="keypress-audio" src={`${PublicPath}/sounds/keypress.mp3`}/>
+        <audio id="correct-pass-audio" src={`${PublicPath}/sounds/correct-pass.mp3`}/>
+        <audio id="wrong-pass-audio" src={`${PublicPath}/sounds/wrong-pass.mp3`}/>
+        <audio id="delete-audio" src={`${PublicPath}/sounds/delete.mp3`}/>
+        <audio id="clear-audio" src={`${PublicPath}/sounds/clear.mp3`}/>
         <MobileScreen>
           <Main>
             <Logo/>
@@ -167,6 +170,6 @@ module.exports = createReactClass({
 
     if (this.state.isPasswordValid === null) return '#7d7d7d'
     if (this.state.isPasswordValid === true) return '#31f59a'
-    if (this.state.isPasswordValid === false) return '#e85873'
+    if (this.state.isPasswordValid === false) return '#b04659'
   }
 })
