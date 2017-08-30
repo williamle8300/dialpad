@@ -18,7 +18,7 @@ module.exports = createReactClass({
       color: ${!this.props.isDisabled ? '#76a28a' : '#2c8454'};
       border: ${!this.props.isDisabled ? '1px solid #203c2c' : '1px solid #0d3c21'};
       border-radius: 2px;
-      cursor: url('http://www.clker.com/cliparts/I/V/F/G/y/K/mouse-pointer-hi.png'), auto;
+      cursor: pointer;
       background-color: ${!this.props.isDisabled ? '#28332e' : '#1c211f'};
       outline-style: none;
       transition: all 100ms ease-out;

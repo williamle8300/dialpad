@@ -28,8 +28,8 @@ module.exports = createReactClass({
     `
     const MobileScreen = styled.div`
       position: relative;
-      width: 375px;
-      height: 667px;
+      width: 35vw;
+      height: 62.25333333vw;
       background-color: #252525;
       opacity: 0.9;
       border-radius: 10px;
