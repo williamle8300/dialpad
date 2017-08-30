@@ -86,7 +86,6 @@ module.exports = createReactClass({
 
     return (
       <App>
-        <audio id="onload-audio" src={`${PublicPath}/sounds/onload.mp3`}/>
         <audio id="keypress-audio" src={`${PublicPath}/sounds/keypress.mp3`}/>
         <audio id="correct-pass-audio" src={`${PublicPath}/sounds/correct-pass.mp3`}/>
         <audio id="wrong-pass-audio" src={`${PublicPath}/sounds/wrong-pass.mp3`}/>
@@ -121,7 +120,6 @@ module.exports = createReactClass({
     )
   },
   componentDidMount: function () {
-    document.getElementById('onload-audio').play()
   },
   handleInput: function (value) {
 
